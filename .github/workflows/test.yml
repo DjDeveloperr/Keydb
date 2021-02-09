@@ -1,0 +1,27 @@
+name: Run Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        deno: ['v1.x', 'nightly']
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2
+
+      - name: Setup Deno
+        uses: denolib/setup-deno@v2.3.0
+        with:
+          deno-version: ${{ matrix.deno }} # tests across multiple Deno versions
+
+      - name: Run tests
+        run: deno test -A
