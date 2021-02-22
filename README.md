@@ -13,7 +13,7 @@ Simple Key-value storage module with support for multiple database backends - wi
 - Main: https://raw.githubusercontent.com/DjDeveloperr/Keydb/main/mod.ts
 - Stable: https://deno.land/x/keydb/mod.ts
 
-Note: It's suggested to import specific Adapter files instead of mod.ts, since it'll cache ALL adapters and their driver dependencies!
+Note: You have to import adapters from their own files! They aren't exported from `mod.ts` to prevent downloading all supported Database drivers and their adapters!
 
 ## Usage
 
