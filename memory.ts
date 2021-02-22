@@ -16,15 +16,16 @@ export class MemoryAdapter implements Adapter {
     return this.namespaces.get(ns);
   }
 
+  // deno-lint-ignore no-explicit-any
   set(k: string, v: any, ns = "", ttl = 0) {
-    let n = this.ns(ns);
+    const n = this.ns(ns);
     n?.set(k, { value: v, ttl });
     return this;
   }
 
   get(k: string, ns = "") {
-    let n = this.ns(ns);
-    let v = n?.get(k);
+    const n = this.ns(ns);
+    const v = n?.get(k);
     return !v ? undefined : { key: k, ns, value: v.value, ttl: v.ttl };
   }
 
@@ -33,7 +34,7 @@ export class MemoryAdapter implements Adapter {
   }
 
   delete(k: string, ns = "") {
-    let n = this.ns(ns);
+    const n = this.ns(ns);
     return n?.delete(k) ?? false;
   }
 
@@ -47,8 +48,8 @@ export class MemoryAdapter implements Adapter {
   }
 
   deleteExpired(ns = "") {
-    let n = this.ns(ns)!;
-    for (let e of n.entries()) {
+    const n = this.ns(ns)!;
+    for (const e of n.entries()) {
       if (e[1].ttl !== 0 && Date.now() > e[1].ttl) {
         n.delete(e[0]);
       }

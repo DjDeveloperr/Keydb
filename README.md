@@ -1,6 +1,6 @@
 # Keydb
 
-Simple Key-value storage module with support for multiple database backends - with a common Promise-based interface for all. *Completely* inspired from [Node.js Keyv](https://npmjs.org/package/keyv).
+Simple Key-value storage module with support for multiple database backends - with a common Promise-based interface for all. *Heavily* inspired from [Node.js Keyv](https://npmjs.org/package/keyv).
 
 ## Features
 
@@ -37,6 +37,13 @@ These are currently supported official Adapters.
 | -------- | --------------------------------------------- |
 | SQLIte   | [Here](https://deno.land/x/keydb/sqlite.ts)   |
 | Postgres | [Here](https://deno.land/x/keydb/postgres.ts) |
+
+## Contributing
+
+You're always welcome to contribute!
+
+- We use `deno fmt` to format code.
+- We use `deno lint` for linting.
 
 ## License
 

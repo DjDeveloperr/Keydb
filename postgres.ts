@@ -28,15 +28,13 @@ export class PostgresAdapter implements Adapter {
     return res;
   }
 
+  // deno-lint-ignore no-explicit-any
   async query<T = any>(sql: string, params: any[] = []): Promise<T[]> {
     const res = await this.db.queryObject(sql, ...params);
     return [...res.rows] as T[];
   }
 
-  async get(
-    key: string,
-    namespace: string = ""
-  ): Promise<KeydbFields | undefined> {
+  async get(key: string, namespace = ""): Promise<KeydbFields | undefined> {
     return await this.query<{
       key: string;
       value: string;
@@ -48,7 +46,7 @@ export class PostgresAdapter implements Adapter {
     ]).then((r) => (r.length == 0 ? undefined : r[0]));
   }
 
-  async has(key: string, namespace: string = ""): Promise<boolean> {
+  async has(key: string, namespace = ""): Promise<boolean> {
     const res = await this.query<{ key: string }>(
       `SELECT key FROM ${this.table} WHERE key = $1 AND ns = $2`,
       [key, namespace]
@@ -58,9 +56,10 @@ export class PostgresAdapter implements Adapter {
 
   async set(
     key: string,
+    // deno-lint-ignore no-explicit-any
     value: any,
-    namespace: string = "",
-    ttl: number = 0
+    namespace = "",
+    ttl = 0
   ): Promise<this> {
     const has = await this.has(key);
     if (has)
@@ -76,12 +75,12 @@ export class PostgresAdapter implements Adapter {
     return this;
   }
 
-  async clear(namespace: string = ""): Promise<this> {
+  async clear(namespace = ""): Promise<this> {
     await this.query(`DELETE FROM ${this.table} WHERE ns = $1`, [namespace]);
     return this;
   }
 
-  async delete(key: string, namespace: string = ""): Promise<boolean> {
+  async delete(key: string, namespace = ""): Promise<boolean> {
     const has = await this.has(key);
     if (!has) return false;
     this.query(`DELETE FROM ${this.table} WHERE key = $1 AND ns = $2`, [
@@ -91,7 +90,7 @@ export class PostgresAdapter implements Adapter {
     return true;
   }
 
-  async keys(namespace: string = ""): Promise<string[]> {
+  async keys(namespace = ""): Promise<string[]> {
     return (
       await this.query<{ key: string }>(
         `SELECT key FROM ${this.table} WHERE ns = $1`,
@@ -100,7 +99,7 @@ export class PostgresAdapter implements Adapter {
     ).map((e) => e.key);
   }
 
-  async deleteExpired(namespace: string = ""): Promise<void> {
+  async deleteExpired(namespace = ""): Promise<void> {
     await this.query(
       `DELETE FROM ${this.table} WHERE ttl != 0 AND ttl < $1 AND ns = $2`,
       [Date.now(), namespace]

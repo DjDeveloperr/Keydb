@@ -1,6 +1,8 @@
 import { Buffer } from "https://deno.land/std@0.86.0/node/buffer.ts";
 
+// deno-lint-ignore no-namespace
 export namespace JSONB {
+  // deno-lint-ignore no-explicit-any
   export const stringify = function stringify(o: any) {
     if ("undefined" == typeof o) return o;
 

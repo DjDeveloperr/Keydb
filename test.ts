@@ -1,4 +1,4 @@
-import { Keydb } from "./sqlite.ts";
+import { Keydb } from "./redis.ts";
 import { assertEquals } from "https://deno.land/std@0.86.0/testing/asserts.ts";
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
@@ -8,7 +8,7 @@ Deno.test({
   name: "Connect to DB",
   sanitizeResources: false,
   async fn() {
-    db = new Keydb("sqlite://memory");
+    db = new Keydb("redis://localhost:6379");
     await db.awaitReady;
   },
 });
@@ -39,25 +39,25 @@ Deno.test({
 Deno.test({
   name: "Get Values",
   async fn() {
-    const test_string = await db.get("test_string");
-    assertEquals(test_string, "hello world");
-    const test_number = await db.get("test_number");
-    assertEquals(test_number, 69);
-    const test_json = await db.get("test_json");
-    assertEquals(typeof test_json, "object");
-    const test_map = await db.get("test_map");
-    assertEquals("value", test_map.get("key"));
+    const testString = await db.get("test_string");
+    assertEquals(testString, "hello world");
+    const testNumber = await db.get("test_number");
+    assertEquals(testNumber, 69);
+    const testJson = await db.get("test_json");
+    assertEquals(typeof testJson, "object");
+    const testMap = await db.get("test_map");
+    assertEquals("value", testMap.get("key"));
   },
 });
 
 Deno.test({
   name: "Delete Key",
   async fn() {
-    let test_number = await db.get("test_number");
-    assertEquals(test_number, 69);
+    let testNumber = await db.get("test_number");
+    assertEquals(testNumber, 69);
     await db.delete("test_number");
-    test_number = await db.get("test_number");
-    assertEquals(test_number, undefined);
+    testNumber = await db.get("test_number");
+    assertEquals(testNumber, undefined);
     const keys = await db.keys();
     assertEquals(keys.length, 3);
   },

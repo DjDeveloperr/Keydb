@@ -5,7 +5,9 @@ import { MemoryAdapter } from "./memory.ts";
 export interface KeydbOptions {
   namespace?: string;
   ttl?: number;
+  // deno-lint-ignore no-explicit-any
   serialize?: (value: any) => string | undefined;
+  // deno-lint-ignore no-explicit-any
   deserialize?: (value: string) => any;
 }
 
@@ -21,8 +23,10 @@ function tryParseURL(q: string) {
 export class Keydb {
   adapter?: Adapter;
   awaitReady?: Promise<Adapter>;
-  namespace: string = "";
+  namespace = "";
+  // deno-lint-ignore no-explicit-any
   serialize: (value: any) => string | undefined = JSONB.stringify;
+  // deno-lint-ignore no-explicit-any
   deserialize: (value: string) => any = JSONB.parse;
   ttl?: number;
 
@@ -34,10 +38,10 @@ export class Keydb {
     if (this.adapter === undefined && typeof adapter !== "object") {
       const proto = tryParseURL(adapter);
       if (!proto) throw new Error("Invalid Adapter Connection URI");
-      let protocol = proto.protocol;
-      let adp = Adapters.get(protocol.substr(0, protocol.length - 1));
+      const protocol = proto.protocol;
+      const adp = Adapters.get(protocol.substr(0, protocol.length - 1));
       if (!adp) throw new Error(`Adapter not found for Protocol: ${protocol}`);
-      let res = adp.init(proto);
+      const res = adp.init(proto);
       if (res instanceof Promise) {
         this.awaitReady = res.then((a) => {
           this.adapter = a;
@@ -57,6 +61,7 @@ export class Keydb {
    *
    * @param key Name of Key to get Value.
    */
+  // deno-lint-ignore no-explicit-any
   async get<T = any>(key: string): Promise<T | undefined> {
     if (this.awaitReady) await this.awaitReady;
     await this.adapter?.deleteExpired(this.namespace);
@@ -72,6 +77,7 @@ export class Keydb {
    * @param key Name of the Key to set.
    * @param value Value to set.
    */
+  // deno-lint-ignore no-explicit-any
   async set(key: string, value: any, ttl?: number): Promise<this> {
     if (this.awaitReady) await this.awaitReady;
     const _ttl = ttl ?? this.ttl;

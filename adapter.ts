@@ -11,6 +11,7 @@ export interface Adapter {
   awaitReady?: Promise<Adapter>;
   set(
     key: string,
+    // deno-lint-ignore no-explicit-any
     value: any,
     namespace: string,
     ttl: number
@@ -32,6 +33,7 @@ export interface AdapterInitializer {
 }
 
 const cache = new ModuleCache("keydb");
+// deno-lint-ignore no-namespace
 export namespace Adapters {
   export function getAll(): AdapterInitializer[] {
     return cache.get("adapters") || [];

@@ -14,11 +14,12 @@ export class SqliteAdapter implements Adapter {
     );
   }
 
+  // deno-lint-ignore no-explicit-any
   query<T = any>(sql: string, params: any[] = []): T[] {
     return [...this.db.query(sql, params).asObjects()] as T[];
   }
 
-  get(key: string, namespace: string = ""): KeydbFields | undefined {
+  get(key: string, namespace = ""): KeydbFields | undefined {
     const res = this.query<{
       key: string;
       value: string;
@@ -31,7 +32,7 @@ export class SqliteAdapter implements Adapter {
     return res;
   }
 
-  has(key: string, namespace: string = ""): boolean {
+  has(key: string, namespace = ""): boolean {
     const res = this.query<{ key: string }>(
       `SELECT key FROM ${this.table} WHERE key = ? AND ns = ?`,
       [key, namespace]
@@ -39,7 +40,8 @@ export class SqliteAdapter implements Adapter {
     return res.length > 0;
   }
 
-  set(key: string, value: any, namespace: string = "", ttl: number = 0): this {
+  // deno-lint-ignore no-explicit-any
+  set(key: string, value: any, namespace = "", ttl = 0): this {
     if (this.has(key))
       this.query(
         `UPDATE ${this.table} SET value = ?, ttl = ? WHERE key = ? AND ns = ?`,
@@ -53,12 +55,12 @@ export class SqliteAdapter implements Adapter {
     return this;
   }
 
-  clear(namespace: string = ""): this {
+  clear(namespace = ""): this {
     this.query(`DELETE FROM ${this.table} WHERE ns = ?`, [namespace]);
     return this;
   }
 
-  delete(key: string, namespace: string = ""): boolean {
+  delete(key: string, namespace = ""): boolean {
     if (!this.has(key)) return false;
     this.query(`DELETE FROM ${this.table} WHERE key = ? AND ns = ?`, [
       key,
@@ -67,14 +69,14 @@ export class SqliteAdapter implements Adapter {
     return true;
   }
 
-  keys(namespace: string = ""): string[] {
+  keys(namespace = ""): string[] {
     return this.query<{ key: string }>(
       `SELECT key FROM ${this.table} WHERE ns = ?`,
       [namespace]
     ).map((e) => e.key);
   }
 
-  deleteExpired(namespace: string = ""): void {
+  deleteExpired(namespace = ""): void {
     this.query(
       `DELETE FROM ${this.table} WHERE ns = ? AND ttl != 0 AND ttl < ?`,
       [namespace, Date.now()]
