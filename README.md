@@ -35,7 +35,7 @@ These are currently supported official Adapters.
 
 | Database | Import                                        |
 | -------- | --------------------------------------------- |
-| SQLIte   | [Here](https://deno.land/x/keydb/sqlite.ts)   |
+| SQLite   | [Here](https://deno.land/x/keydb/sqlite.ts)   |
 | Postgres | [Here](https://deno.land/x/keydb/postgres.ts) |
 
 ## Contributing
