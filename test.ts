@@ -1,4 +1,4 @@
-import { Keydb } from "./redis.ts";
+import { Keydb } from "./sqlite.ts";
 import { assertEquals } from "https://deno.land/std@0.86.0/testing/asserts.ts";
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
