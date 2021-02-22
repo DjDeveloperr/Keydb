@@ -8,7 +8,7 @@ Deno.test({
   name: "Connect to DB",
   sanitizeResources: false,
   async fn() {
-    db = new Keydb("redis://localhost:6379");
+    db = new Keydb("sqlite://test.sqlite");
     await db.awaitReady;
   },
 });
