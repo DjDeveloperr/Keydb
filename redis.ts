@@ -58,7 +58,6 @@ export class RedisAdapter implements Adapter {
       ["ttl", ttl.toString()],
     ];
 
-    console.log("hset", key, fields);
     await this.db.hset(key, ...fields);
 
     if (ttl !== 0)
