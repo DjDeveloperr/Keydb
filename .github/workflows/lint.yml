@@ -1,0 +1,23 @@
+name: Run Linter
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v2
+
+      - name: Setup Deno
+        uses: denolib/setup-deno@v2.3.0
+        with:
+          deno-version: v1.x
+
+      - name: Run Linter
+        run: deno lint --unstable
