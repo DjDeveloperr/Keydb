@@ -1,4 +1,4 @@
-import { Buffer } from "https://deno.land/std@0.86.0/node/buffer.ts";
+import { Buffer } from "https://deno.land/std@0.88.0/node/buffer.ts";
 
 // deno-lint-ignore no-namespace
 export namespace JSONB {
