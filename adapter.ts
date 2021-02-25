@@ -1,4 +1,4 @@
-import { ModuleCache } from "https://deno.land/x/module_cache@0.0.1/mod.ts";
+import { ModuleCache } from "https://deno.land/x/module_cache@0.0.3/mod.ts";
 
 export interface KeydbFields {
   key: string;

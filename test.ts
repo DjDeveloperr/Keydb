@@ -79,5 +79,6 @@ Deno.test({
     await db.clear();
     const keys = await db.keys();
     assertEquals(keys.length, 0);
+    await Deno.remove("test.sqlite");
   },
 });
