@@ -1,4 +1,4 @@
-import { DB } from "https://deno.land/x/sqlite@v2.3.2/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.7.1/mod.ts";
 import { Adapter, Adapters, KeydbFields } from "./adapter.ts";
 import { Keydb } from "./keydb.ts";
 
