@@ -16,7 +16,7 @@ export class SqliteAdapter implements Adapter {
 
   // deno-lint-ignore no-explicit-any
   query<T = any>(sql: string, params: any[] = []): T[] {
-    return this.db.query(sql, params) as T[];
+    return this.db.queryEntries(sql, params) as T[];
   }
 
   get(key: string, namespace = ""): KeydbFields | undefined {
