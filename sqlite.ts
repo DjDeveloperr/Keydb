@@ -1,4 +1,4 @@
-import { DB } from "https://deno.land/x/sqlite@v2.3.2/mod.ts";
+import { DB } from "https://deno.land/x/sqlite@v3.7.1/mod.ts";
 import { Adapter, Adapters, KeydbFields } from "./adapter.ts";
 import { Keydb } from "./keydb.ts";
 
@@ -16,7 +16,7 @@ export class SqliteAdapter implements Adapter {
 
   // deno-lint-ignore no-explicit-any
   query<T = any>(sql: string, params: any[] = []): T[] {
-    return [...this.db.query(sql, params).asObjects()] as T[];
+    return this.db.queryEntries(sql, params) as T[];
   }
 
   get(key: string, namespace = ""): KeydbFields | undefined {
